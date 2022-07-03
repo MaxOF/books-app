@@ -5,7 +5,8 @@ import {useDispatch} from "react-redux";
 import {ThunkDispatch} from "redux-thunk";
 import {RootReducerType, useAppSelector} from "./app/store";
 import {DispatchThunkBooks, fetchMoreBooks, getBooks} from "./features/books/booksReducer";
-import {log} from "util";
+import {Routes, Route} from "react-router-dom";
+import {Book} from "./features/book/Book";
 
 function App() {
 
@@ -83,48 +84,61 @@ function App() {
                         </div>
                     </div>
                 </section>
-                <div className={s.page__totalResult}>
-                    <div className={s.totalResult__block}>
-                        Total result:
-                    </div>
-                </div>
-                <div className={s.page__results}>
-                    <div className={s.page__cards}>
-                        {books ? books.map((book: any, index: any) => {
-                                let imageLink = book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail
-                                if (imageLink !== undefined && book.volumeInfo.categories !== undefined && book.volumeInfo.title !== undefined && book.volumeInfo.authors !== undefined) {
-                                    if(book[index] !== book) {}
-                                    return (
-                                        <div key={index} className={s.cards__card}>
-                                            <div className={s.card__container}>
-                                                <div className={s.card__imgBlock}>
-                                                    <img src={imageLink} alt="bookCover"/>
-                                                </div>
-                                                <div className={s.card__categoryBlock}>
-                                                    {
-                                                        book.volumeInfo.categories
-                                                    }
-                                                </div>
-                                                <div className={s.card__titleBlock}>
-                                                    {book.volumeInfo.title}
-                                                </div>
-                                                <div className={s.card__authorBlock}>
-                                                    {book.volumeInfo.authors}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                                }
-                            })
-                            : 'Sorry, we can`t find your favourite book:('}
-                    </div>
-                </div>
+                <Routes>
+                    <Route path="/" element={
+                        <>
+                            <div className={s.page__totalResult}>
+                                <div className={s.totalResult__block}>
+                                    Total result:
+                                </div>
+                            </div>
+                            <div className={s.page__results}>
+                                <div className={s.page__cards}>
+                                    {books ? books.map((book: any, index: any) => {
+                                            let imageLink = book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail
+                                            if (imageLink !== undefined && book.volumeInfo.categories !== undefined && book.volumeInfo.title !== undefined && book.volumeInfo.authors !== undefined) {
+                                                if (book[index] !== book) {
+                                                }
 
-                <div className={s.page__loadMore}>
-                    <div className={s.loadMore__block}>
-                        <button onClick={onLoadMoreHandler}>Load more</button>
-                    </div>
-                </div>
+                                                return (
+                                                    <div key={index} className={s.cards__card}>
+                                                        <div className={s.card__container}>
+                                                            <div className={s.card__imgBlock}>
+                                                                <img src={imageLink} alt="bookCover"/>
+                                                            </div>
+                                                            <div className={s.card__categoryBlock}>
+                                                                {
+                                                                    book.volumeInfo.categories
+                                                                }
+                                                            </div>
+                                                            <div className={s.card__titleBlock}>
+                                                                {book.volumeInfo.title}
+                                                            </div>
+                                                            <div className={s.card__authorBlock}>
+                                                                {book.volumeInfo.authors}
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                )
+                                            }
+                                        })
+                                        : 'Sorry, we can`t find your favourite book:('}
+                                </div>
+                            </div>
+
+                            <div className={s.page__loadMore}>
+                                <div className={s.loadMore__block}>
+                                    <button onClick={onLoadMoreHandler}>Load more</button>
+                                </div>
+                            </div>
+                        </>
+                    }/>
+                    <Route path="/book" element={<Book />}/>
+
+                </Routes>
+
+
             </main>
 
         </div>
