@@ -9,9 +9,9 @@ const instance = axios.create({
 export const booksAPI = {
     fetchBooks(values: ValuesType){
         if(values.subject === 'all'){
-            return instance.get(`volumes?key=${apiKey}&q=intitle:${values.title}&maxResults=30&orderBy=${values.sorting}`)
+            return instance.get(`volumes?key=${apiKey}&q=intitle:${values.title}&maxResults=30&orderBy=${values.sorting}&startIndex=${values.startIndex}`)
         } else {
-            return instance.get(`volumes?key=${apiKey}&q=intitle:${values.title}+subject:${values.subject}&maxResults=30&orderBy=${values.sorting}`)
+            return instance.get(`volumes?key=${apiKey}&q=intitle:${values.title}+subject:${values.subject}&maxResults=30&orderBy=${values.sorting}&startIndex=${values.startIndex}`)
         }
     }
 }
@@ -20,4 +20,5 @@ export type ValuesType = {
     subject: string
     sorting: string
     title: string
+    startIndex?: number
 }
