@@ -10,8 +10,12 @@ export const Book = () => {
     const params = useParams<'id'>()
     const id = params.id
     const {books} = useAppSelector(state => state.books)
+    const filteredBook = books.filter((book:any) => {
+        return book.id === id
+    })
+
     if (id) {
-        let imageLink = books[id].volumeInfo.imageLinks && books[id].volumeInfo.imageLinks.thumbnail
+        let imageLink = filteredBook[0].volumeInfo.imageLinks && filteredBook[0].volumeInfo.imageLinks.thumbnail
         return (
             <div className={s.page__book}>
                 <div className={s.book__block}>
@@ -20,16 +24,16 @@ export const Book = () => {
                     </div>
                     <div className={s.book__body}>
                         <div className={s.book__category}>
-                            {books[id].volumeInfo.categories}
+                            {filteredBook[0].volumeInfo.categories}
                         </div>
                         <div className={s.book__title}>
-                            {books[id].volumeInfo.title}
+                            {filteredBook[0].volumeInfo.title}
                         </div>
                         <div className={s.book__author}>
-                            {books[id].volumeInfo.author}
+                            {filteredBook[0].volumeInfo.author}
                         </div>
                         <div className={s.book__description}>
-                            {books[id].volumeInfo.description}
+                            {filteredBook[0].volumeInfo.description}
                         </div>
                     </div>
                 </div>

@@ -50,10 +50,13 @@
           }
 
           .searchBlock__input input {
-            border: 1px solid black;
+            border: 1px solid #969393;
             width: 250px;
             padding: 12px;
             border-radius: 8px
+          }
+          .searchBlock__input input:focus {
+            border: 1px solid #423a64;
           }
 
           .select__category {
@@ -69,7 +72,7 @@
 
           .select__category select {
             font-size: 18px;
-            border: 1px solid black;
+            border: 1px solid #969393;
             padding: 12px;
             border-radius: 10px;
             width: 130px;
@@ -88,7 +91,7 @@
 
           .select__sort select {
             font-size: 18px;
-            border: 1px solid black;
+            border: 1px solid #969393;
             padding: 12px;
             border-radius: 10px;
             width: 130px;
@@ -107,10 +110,15 @@
             width: 91px;
             border-radius: 10px;
             padding: 12px;
-            border: 1px solid black;
+            border: 1px solid #5778c0;
             text-align: center;
             font-size: 18px;
             cursor: pointer;
+            background-color: #9a93c4;
+          }
+          .search__button button:hover {
+            border: 1px solid #8f89b6;
+            background-color: #5778c0;
           }
 
         }

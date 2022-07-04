@@ -12,6 +12,7 @@ export const Books = ({onLoadMoreHandler}:PropsType) => {
     const navigate = useNavigate()
     const {books, totalResults} = useAppSelector(state => state.books)
 
+
     return (
         <>
             <div className={s.page__totalResult}>
@@ -21,17 +22,17 @@ export const Books = ({onLoadMoreHandler}:PropsType) => {
             </div>
             <div className={s.page__results}>
                 <div className={s.page__cards}>
-                    {books.map((book: any, index: any) => {
+                    {books.map((book: any) => {
                         let imageLink = book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail
                         const onCardHandler = () => {
-                            return navigate(`/book/${index}`)
+                            return navigate(`/book/${book.id}`)
                         }
                         if (imageLink !== undefined
                             && book.volumeInfo.categories !== undefined
                             && book.volumeInfo.title !== undefined
                             && book.volumeInfo.authors !== undefined) {
                             return (
-                                <div key={index} className={s.cards__card}
+                                <div key={book.id} className={s.cards__card}
                                      onClick={onCardHandler}>
                                     <div className={s.card__container}>
                                         <div className={s.card__imgBlock}>
