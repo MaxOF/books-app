@@ -20,6 +20,7 @@ const initialState: InitialStateType = {
 export const booksReducer = (state = initialState, action: ActionsType) => {
     switch (action.type) {
         case 'BOOKS/SET-BOOKS':
+            debugger
             let uniqueArr = action.books.filter((book: any, index: any) => {
                 return action.books.indexOf(book) === index
             })
@@ -58,6 +59,9 @@ export const getBooks = (values: ValuesType): ThunkType => (dispatch: Dispatch) 
     dispatch(setLoader(true))
     return booksAPI.fetchBooks(values)
         .then(res => {
+            if(res.data.items === undefined) {
+                dispatch(setBooks([]))
+            }
             dispatch(setTotalResults(res.data.totalItems))
             dispatch(setBooks(res.data.items))
         })

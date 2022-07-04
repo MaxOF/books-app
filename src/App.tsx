@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
+import React, {ChangeEvent, useState, KeyboardEvent, useEffect} from 'react';
 import './App.css';
 import s from './Main.module.scss'
 import {useDispatch} from "react-redux";
@@ -7,21 +7,25 @@ import {RootReducerType, useAppSelector} from "./app/store";
 import {DispatchThunkBooks, fetchMoreBooks, getBooks, setTotalResults} from "./features/books/booksReducer";
 import {Routes, Route, useNavigate} from "react-router-dom";
 import {Book} from "./features/book/Book";
-import {ErrorHandler} from "./utils/ErrorHandler";
+
+import {Books} from "./features/books/Books";
+import {appErrorHandling} from "./app/appReducer";
+import {toast} from "react-hot-toast";
+
 
 function App() {
 
+
     const optionArr: string[] = ['all', 'art', 'biography', 'computers', 'history', ' medical', 'poetry']
+
     const dispatch = useDispatch<ThunkDispatch<RootReducerType, unknown, DispatchThunkBooks>>()
-    const {books, totalResults, success} = useAppSelector(state => state.books)
+    const {success} = useAppSelector(state => state.books)
     const {error} = useAppSelector(state => state.app)
 
-
+    const [page, setPage] = useState<number>(0)
     const [title, setTitle] = useState<string>('')
     const [sort, setSort] = useState<string>('relevance')
     const [category, setCategory] = useState<string>('all')
-    const [index, setIndex] = useState<number>(0)
-
     const navigate = useNavigate()
 
 
@@ -31,13 +35,10 @@ function App() {
     const onClickHandler = () => {
         if (title.trim() !== '') {
             navigate('/')
-            dispatch(getBooks({subject: category, title, sorting: sort, startIndex: index}))
+            dispatch(getBooks({subject: category, title, sorting: sort, startIndex: page}))
         }
     }
-    const onLoadMoreHandler = () => {
-        setIndex(index + 1)
-        dispatch(fetchMoreBooks({subject: category, title, sorting: sort, startIndex: index}))
-    }
+
     const onKeyBoardHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             onClickHandler()
@@ -49,6 +50,17 @@ function App() {
     const onCategoryChangeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
         setCategory(e.currentTarget.value)
     }
+
+    const onLoadMoreHandler = () => {
+        setPage(page + 1)
+        dispatch(fetchMoreBooks({subject: category, title, sorting: sort, startIndex: page}))
+    }
+
+    if (error) {
+        toast.error(`${error}😕`)
+        dispatch(appErrorHandling(null))
+    }
+
 
     return (
         <div className="App">
@@ -67,7 +79,7 @@ function App() {
                                     />
                                 </div>
                                 <div className={s.select__category}>
-                                    <select onChange={onCategoryChangeHandler} name="categories" id=""
+                                    <select onChange={onCategoryChangeHandler}
                                             defaultValue='all'>
                                         {
                                             optionArr.map((opt, index) => {
@@ -88,70 +100,19 @@ function App() {
                             </div>
                         </div>
                     </div>
+
                 </section>
                 {
                     success
                         ? <div className={s.loader}>Loading...</div>
                         :
                         <Routes>
-                            <Route path="/" element={
-                                <>
-                                    <div className={s.page__totalResult}>
-                                        <div className={s.totalResult__block}>
-                                            Total result: {totalResults}
-                                        </div>
-                                    </div>
-                                    <div className={s.page__results}>
-                                        <div className={s.page__cards}>
-                                            {books ? books.map((book: any, index: any) => {
-                                                    let imageLink = book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail
-                                                    const onCardHandler = () => {
-                                                        return navigate(`/book/${index}`)
-                                                    }
-                                                    if (imageLink !== undefined && category !== undefined && book.volumeInfo.title !== undefined && book.volumeInfo.authors !== undefined) {
-
-                                                        return (
-                                                            <div key={index} className={s.cards__card}
-                                                                 onClick={onCardHandler}>
-                                                                <div className={s.card__container}>
-                                                                    <div className={s.card__imgBlock}>
-                                                                        <img src={imageLink} alt="bookCover"/>
-                                                                    </div>
-                                                                    <div className={s.card__categoryBlock}>
-                                                                        {book.volumeInfo.categories}
-                                                                    </div>
-                                                                    <div className={s.card__titleBlock}>
-                                                                        {book.volumeInfo.title}
-                                                                    </div>
-                                                                    <div className={s.card__authorBlock}>
-                                                                        {book.volumeInfo.authors}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    }
-                                                })
-                                                : 'Sorry, we can`t find your favourite book:('}
-                                        </div>
-                                    </div>
-                                    {books.length >= 30 ?
-                                        <div className={s.page__loadMore}>
-                                            <div className={s.loadMore__block}>
-                                                <button onClick={onLoadMoreHandler}>Load more</button>
-                                            </div>
-                                        </div> : <></>
-                                    }
-
-                                </>
-                            }/>
-
+                            <Route path="/" element={<Books onLoadMoreHandler={onLoadMoreHandler}/>}/>
                             <Route path="/book/:id" element={<Book/>}/>
                         </Routes>
                 }
             </main>
-            {
-                error ? <ErrorHandler /> : <></>
-            }
+
         </div>
     );
 }
