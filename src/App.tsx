@@ -4,20 +4,25 @@ import s from './Main.module.scss'
 import {useDispatch} from "react-redux";
 import {ThunkDispatch} from "redux-thunk";
 import {RootReducerType, useAppSelector} from "./app/store";
-import {DispatchThunkBooks, fetchMoreBooks, getBooks} from "./features/books/booksReducer";
-import {Routes, Route} from "react-router-dom";
+import {DispatchThunkBooks, fetchMoreBooks, getBooks, setTotalResults} from "./features/books/booksReducer";
+import {Routes, Route, useNavigate} from "react-router-dom";
 import {Book} from "./features/book/Book";
+import {ErrorHandler} from "./utils/ErrorHandler";
 
 function App() {
 
     const optionArr: string[] = ['all', 'art', 'biography', 'computers', 'history', ' medical', 'poetry']
     const dispatch = useDispatch<ThunkDispatch<RootReducerType, unknown, DispatchThunkBooks>>()
-    const {books} = useAppSelector(state => state.books)
+    const {books, totalResults, success} = useAppSelector(state => state.books)
+    const {error} = useAppSelector(state => state.app)
+
 
     const [title, setTitle] = useState<string>('')
     const [sort, setSort] = useState<string>('relevance')
     const [category, setCategory] = useState<string>('all')
     const [index, setIndex] = useState<number>(0)
+
+    const navigate = useNavigate()
 
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,9 +30,9 @@ function App() {
     }
     const onClickHandler = () => {
         if (title.trim() !== '') {
+            navigate('/')
             dispatch(getBooks({subject: category, title, sorting: sort, startIndex: index}))
         }
-        setTitle('')
     }
     const onLoadMoreHandler = () => {
         setIndex(index + 1)
@@ -84,63 +89,69 @@ function App() {
                         </div>
                     </div>
                 </section>
-                <Routes>
-                    <Route path="/" element={
-                        <>
-                            <div className={s.page__totalResult}>
-                                <div className={s.totalResult__block}>
-                                    Total result:
-                                </div>
-                            </div>
-                            <div className={s.page__results}>
-                                <div className={s.page__cards}>
-                                    {books ? books.map((book: any, index: any) => {
-                                            let imageLink = book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail
-                                            if (imageLink !== undefined && book.volumeInfo.categories !== undefined && book.volumeInfo.title !== undefined && book.volumeInfo.authors !== undefined) {
-                                                if (book[index] !== book) {
-                                                }
+                {
+                    success
+                        ? <div className={s.loader}>Loading...</div>
+                        :
+                        <Routes>
+                            <Route path="/" element={
+                                <>
+                                    <div className={s.page__totalResult}>
+                                        <div className={s.totalResult__block}>
+                                            Total result: {totalResults}
+                                        </div>
+                                    </div>
+                                    <div className={s.page__results}>
+                                        <div className={s.page__cards}>
+                                            {books ? books.map((book: any, index: any) => {
+                                                    let imageLink = book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail
+                                                    const onCardHandler = () => {
+                                                        return navigate(`/book/${index}`)
+                                                    }
+                                                    if (imageLink !== undefined && category !== undefined && book.volumeInfo.title !== undefined && book.volumeInfo.authors !== undefined) {
 
-                                                return (
-                                                    <div key={index} className={s.cards__card}>
-                                                        <div className={s.card__container}>
-                                                            <div className={s.card__imgBlock}>
-                                                                <img src={imageLink} alt="bookCover"/>
+                                                        return (
+                                                            <div key={index} className={s.cards__card}
+                                                                 onClick={onCardHandler}>
+                                                                <div className={s.card__container}>
+                                                                    <div className={s.card__imgBlock}>
+                                                                        <img src={imageLink} alt="bookCover"/>
+                                                                    </div>
+                                                                    <div className={s.card__categoryBlock}>
+                                                                        {book.volumeInfo.categories}
+                                                                    </div>
+                                                                    <div className={s.card__titleBlock}>
+                                                                        {book.volumeInfo.title}
+                                                                    </div>
+                                                                    <div className={s.card__authorBlock}>
+                                                                        {book.volumeInfo.authors}
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div className={s.card__categoryBlock}>
-                                                                {
-                                                                    book.volumeInfo.categories
-                                                                }
-                                                            </div>
-                                                            <div className={s.card__titleBlock}>
-                                                                {book.volumeInfo.title}
-                                                            </div>
-                                                            <div className={s.card__authorBlock}>
-                                                                {book.volumeInfo.authors}
-                                                            </div>
-                                                        </div>
+                                                        )
+                                                    }
+                                                })
+                                                : 'Sorry, we can`t find your favourite book:('}
+                                        </div>
+                                    </div>
+                                    {books.length >= 30 ?
+                                        <div className={s.page__loadMore}>
+                                            <div className={s.loadMore__block}>
+                                                <button onClick={onLoadMoreHandler}>Load more</button>
+                                            </div>
+                                        </div> : <></>
+                                    }
 
-                                                    </div>
-                                                )
-                                            }
-                                        })
-                                        : 'Sorry, we can`t find your favourite book:('}
-                                </div>
-                            </div>
+                                </>
+                            }/>
 
-                            <div className={s.page__loadMore}>
-                                <div className={s.loadMore__block}>
-                                    <button onClick={onLoadMoreHandler}>Load more</button>
-                                </div>
-                            </div>
-                        </>
-                    }/>
-                    <Route path="/book" element={<Book />}/>
-
-                </Routes>
-
-
+                            <Route path="/book/:id" element={<Book/>}/>
+                        </Routes>
+                }
             </main>
-
+            {
+                error ? <ErrorHandler /> : <></>
+            }
         </div>
     );
 }

@@ -1,0 +1,48 @@
+.page__book {
+  .book__block {
+    display: flex;
+
+    .book__imgBlock {
+      flex: 1 1 45%;
+      text-align: center;
+      padding: 50px;
+      background: #efecec;
+      border-radius: 10px;
+      margin: 0 0 30px 30px;
+    }
+    .book__imgBlock img {
+      width: 277px;
+      height: 431px;
+      box-shadow: 10px 10px 5px #4d4c4c
+    }
+
+    .book__body {
+      flex: 1 1 55%;
+      padding: 50px;
+      font-size: 18px;
+
+      .book__category {
+        padding: 0 0 35px 0;
+        font-weight: 300;
+      }
+
+      .book__title {
+        padding: 0 0 10px 0;
+        line-height: 172%;
+        font-weight: 700;
+        font-size: 20px;
+      }
+
+      .book__author {
+        padding: 0 0 35px 0;
+        text-decoration: underline;
+        color: #919191;
+        font-weight: 300;
+      }
+
+      .book__description {
+        border: 1px solid #e0e0e0;
+      }
+    }
+  }
+}
