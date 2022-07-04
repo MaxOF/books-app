@@ -20,7 +20,6 @@ const initialState: InitialStateType = {
 export const booksReducer = (state = initialState, action: ActionsType) => {
     switch (action.type) {
         case 'BOOKS/SET-BOOKS':
-            debugger
             let uniqueArr = action.books.filter((book: any, index: any) => {
                 return action.books.indexOf(book) === index
             })

@@ -17,8 +17,6 @@ switch (action.type) {
 }
 
 export type ActionsType = AppErrorHandlingType
-
-
 export type AppErrorHandlingType = ReturnType<typeof appErrorHandling>
 
 export const appErrorHandling = (err: string | null) => ({type: 'APP/ERROR-HANDLING', err} as const)
