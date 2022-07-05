@@ -2,7 +2,6 @@
   .book__block {
     display: flex;
     flex-wrap: wrap;
-
     .book__imgBlock {
       flex: 0 1 40%;
       text-align: center;
@@ -11,7 +10,6 @@
       border-radius: 10px;
       margin: 0 0 30px 30px;
     }
-    
     @media (max-width: 920px) {
       .book__imgBlock{
         flex: 0 1 100%;
@@ -19,7 +17,6 @@
         margin: 0 30px 0 30px;
       }
     }
-
     .book__imgBlock img {
       width: 277px;
       height: 431px;
@@ -31,13 +28,10 @@
         height: 280px;
       }
     }
-
     .book__body {
       flex: 0 1 55%;
       padding: 50px;
       font-size: 18px;
-
-
       .book__category {
         padding: 0 0 35px 0;
         font-weight: 300;
@@ -48,7 +42,6 @@
           padding: 0 0 5px 0;
         }
       }
-
       .book__title {
         padding: 0 0 10px 0;
         line-height: 172%;
@@ -61,7 +54,6 @@
           padding: 0 0 5px 0;
         }
       }
-
       .book__author {
         padding: 0 0 35px 0;
         text-decoration: underline;
@@ -74,7 +66,6 @@
           padding: 0 0 15px 0;
         }
       }
-
       .book__description {
         border: 1px solid #e0e0e0;
       }

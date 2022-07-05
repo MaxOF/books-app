@@ -1,7 +1,9 @@
 import React from 'react';
-import s from "./Books.module.scss";
-import {useAppSelector} from "../../app/store";
 import {useNavigate} from "react-router-dom";
+
+import {useAppSelector} from "../../app/store";
+
+import s from "./Books.module.scss";
 
 type PropsType = {
     onLoadMoreHandler: () => void

@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
-import {booksAPI, ValuesType} from "../../api/api";
 import {ThunkAction} from "redux-thunk";
+
+import {booksAPI, ValuesType} from "../../api/api";
 import {RootReducerType} from "../../app/store";
 import {appErrorHandling, AppErrorHandlingType} from "../../app/appReducer";
 

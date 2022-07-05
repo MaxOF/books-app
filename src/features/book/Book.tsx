@@ -1,9 +1,9 @@
 import React from 'react';
-import s from './Book.module.scss'
 import {useParams} from "react-router-dom";
+
 import {useAppSelector} from "../../app/store";
 
-
+import s from './Book.module.scss'
 
 export const Book = () => {
 

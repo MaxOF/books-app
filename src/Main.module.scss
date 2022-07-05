@@ -10,7 +10,6 @@
         position: relative;
         max-width: 100%;
         padding: 38px 0 46px 0;
-
         .search__title {
           font-size: 40px;
           line-height: calc(80 / 50 * 100%);
@@ -25,12 +24,9 @@
             margin: 0 0 20px 0;
           }
         }
-
         .search__form {
           display: flex;
           flex-wrap: wrap;
-
-
           .searchBlock__input {
             font-size: 18px;
             margin: 20px 20px 40px 0;
@@ -44,7 +40,6 @@
               padding: 0 0 10px 0;
             }
           }
-
           .searchBlock__input input {
             border: 1px solid #969393;
             width: 250px;
@@ -54,7 +49,6 @@
           .searchBlock__input input:focus {
             border: 1px solid #423a64;
           }
-
           .select__category {
             flex: 1 1 33%;
           }
@@ -65,7 +59,6 @@
               padding: 0 0 30px 0;
             }
           }
-
           .select__category select {
             font-size: 18px;
             border: 1px solid #969393;
@@ -73,7 +66,6 @@
             border-radius: 10px;
             width: 130px;
           }
-
           .select__sort {
             flex: 1 1 33%;
           }
@@ -84,7 +76,6 @@
               padding: 0 0 30px 0;
             }
           }
-
           .select__sort select {
             font-size: 18px;
             border: 1px solid #969393;
@@ -116,7 +107,6 @@
             border: 1px solid #8f89b6;
             background-color: #5778c0;
           }
-
         }
       }
     }
