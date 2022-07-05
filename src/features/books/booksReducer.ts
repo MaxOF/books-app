@@ -87,15 +87,19 @@ export type BookType = {
 export const booksReducer = (state = initialState, action: ActionsType) => {
     switch (action.type) {
         case 'BOOKS/SET-BOOKS':
-            let uniqueArr = action.books.filter((book, index) => {
-                return action.books.indexOf(book) === index
+            let uniqueArr = action.books.filter((book, index, self) => {
+                return self.findIndex(index => {
+                    return index.id === book.id
+                })
             })
             return {...state, books: uniqueArr}
         case 'BOOKS/SET-TOTAL-RESULTS':
             return {...state, totalResults: action.value}
         case 'BOOKS/SET-NEW-BOOKS':
-            let newUniqueArr = action.books.filter((book, index) => {
-                return action.books.indexOf(book) === index
+            let newUniqueArr = action.books.filter((book, index, self) => {
+                return state.books.findIndex(index => {
+                    return index.id === book.id
+                })
             })
             return {...state, books: [...state.books, newUniqueArr].flat(1)}
         case 'BOOKS/SET-LOADER':

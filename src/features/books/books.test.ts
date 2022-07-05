@@ -7,14 +7,14 @@ beforeEach(() => {
         books: [
             {
                 kind: "",
-                id: "Y-mUDwAAQBAJ",
+                id: "Y-mUDwAAQBAJdsfsdf",
                 etag: "gEPdgSE5ZEY",
                 selfLink: "https://www.googleapis.com/books/v1/volumes/Y-mUDwAAQBAJ",
                 volumeInfo: {
                     title: "Programming TypeScript",
                     subtitle: "Making Your JavaScript Applications Scale",
                     authors: [
-                        "Boris Cherny"
+                        "Boris ghng"
                     ],
                     publisher: "O'Reilly Media",
                     publishedDate: "2019-04-25",
@@ -81,9 +81,9 @@ beforeEach(() => {
             },
             {
                 kind: "",
-                id: "Y-mUDwAdsfAQBAJ",
+                id: "dsfQBAJ",
                 etag: "gEPdgSE5ZEY",
-                selfLink: "https://www.googleapis.com/books/v1/volumes/Y-mUDwAAQBAJ",
+                selfLink: "https://www.googleapis.com/books/v1/volumes/Y-mUDwAdsfAsdfdsQBAJ",
                 volumeInfo: {
                     title: "TypeScript",
                     subtitle: "Making Your JavaScript Applications Scale",
@@ -163,13 +163,13 @@ beforeEach(() => {
 describe('fetch some books', () => {
     test('should return an array of books', () => {
         const newState = booksReducer(state, setBooks(state.books))
-        expect(newState.books[0].volumeInfo.title).toBe("Programming TypeScript")
-        expect(newState.books.length).toBe(2)
+        expect(newState.books[0].volumeInfo.title).toBe("TypeScript")
+        expect(newState.books.length).toBe(1)
     })
     test('should return an array of books in the end', () => {
         const newState = booksReducer(state, setNewBooks(state.books))
-        expect(newState.books[2].volumeInfo.title).toBe("Programming TypeScript")
-        expect(newState.books.length).toBe(4)
+        expect(newState.books[2].volumeInfo.title).toBe("TypeScript")
+        expect(newState.books.length).toBe(3)
     })
     test('should return a total items of array', () => {
         const newState = booksReducer(state, setTotalResults(state.totalResults))
