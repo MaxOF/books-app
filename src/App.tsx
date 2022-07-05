@@ -1,16 +1,17 @@
-import React, {ChangeEvent, useState, KeyboardEvent, useEffect} from 'react';
+import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
 import './App.css';
 import s from './Main.module.scss'
 import {useDispatch} from "react-redux";
 import {ThunkDispatch} from "redux-thunk";
 import {RootReducerType, useAppSelector} from "./app/store";
-import {DispatchThunkBooks, fetchMoreBooks, getBooks, setTotalResults} from "./features/books/booksReducer";
+import {DispatchThunkBooks, fetchMoreBooks, getBooks} from "./features/books/booksReducer";
 import {Routes, Route, useNavigate} from "react-router-dom";
 import {Book} from "./features/book/Book";
 
 import {Books} from "./features/books/Books";
 import {appErrorHandling} from "./app/appReducer";
 import {toast} from "react-hot-toast";
+import {Loader} from "./utils/Loader";
 
 
 function App() {
@@ -104,7 +105,7 @@ function App() {
                 </section>
                 {
                     success
-                        ? <div className={s.loader}>Loading...</div>
+                        ? <Loader />
                         :
                         <Routes>
                             <Route path="/" element={<Books onLoadMoreHandler={onLoadMoreHandler}/>}/>

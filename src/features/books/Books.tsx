@@ -1,5 +1,5 @@
 import React from 'react';
-import s from "../../Main.module.scss";
+import s from "./Books.module.scss";
 import {useAppSelector} from "../../app/store";
 import {useNavigate} from "react-router-dom";
 
@@ -22,7 +22,7 @@ export const Books = ({onLoadMoreHandler}:PropsType) => {
             </div>
             <div className={s.page__results}>
                 <div className={s.page__cards}>
-                    {books.map((book: any) => {
+                    {books.map(book => {
                         let imageLink = book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail
                         const onCardHandler = () => {
                             return navigate(`/book/${book.id}`)

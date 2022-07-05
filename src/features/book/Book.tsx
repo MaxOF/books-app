@@ -10,7 +10,7 @@ export const Book = () => {
     const params = useParams<'id'>()
     const id = params.id
     const {books} = useAppSelector(state => state.books)
-    const filteredBook = books.filter((book:any) => {
+    const filteredBook = books.filter(book => {
         return book.id === id
     })
 
@@ -30,7 +30,7 @@ export const Book = () => {
                             {filteredBook[0].volumeInfo.title}
                         </div>
                         <div className={s.book__author}>
-                            {filteredBook[0].volumeInfo.author}
+                            {filteredBook[0].volumeInfo.authors}
                         </div>
                         <div className={s.book__description}>
                             {filteredBook[0].volumeInfo.description}
