@@ -1,33 +1,63 @@
-import {getBooks, setBooks, setLoader, setNewBooks, setTotalResults} from "./booksReducer";
+import {fetchMoreBooks, getBooks, setBooks, setLoader, setNewBooks, setTotalResults} from "./booksReducer";
 import {booksAPI} from "../../api/api";
-import {appErrorHandling} from "../../app/appReducer";
+
+
 
 jest.mock("../../api/api")
-
-const booksAPIMock = booksAPI
+const bookAPIMock = booksAPI as jest.Mocked<typeof booksAPI>
 
 const result = {
-    items: [],
-    kind: "",
-    totalItems: 200
+    status: 200,
+    statusText: 'Ok',
+    headers: {},
+    config: {},
+    data: {
+        items: [],
+        kind: "",
+        totalItems: 2,
+    }
 }
-jest.fn().mockImplementation(() => Promise.resolve(result));
 
-test('', async () => {
-    const thunk = getBooks({
-        subject: 'history',
-        startIndex: 0,
-        title: 'Js',
-        sorting: 'newest'
+describe('fetch some books', () => {
+    test('get books', async () => {
+        const thunk = getBooks({
+            subject: 'history',
+            startIndex: 0,
+            title: 'Js',
+            sorting: 'newest'
+        })
+
+        bookAPIMock.fetchBooks.mockResolvedValue(Promise.resolve(result))
+        const dispatchMock = jest.fn()
+        const getStateMock = jest.fn()
+
+
+        await thunk(dispatchMock, getStateMock, {})
+
+        expect(dispatchMock).toBeCalledTimes(4)
+        expect(dispatchMock).toHaveBeenNthCalledWith(1, setLoader(true))
+        expect(dispatchMock).toHaveBeenNthCalledWith(2, setTotalResults(result.data.totalItems))
+        expect(dispatchMock).toHaveBeenNthCalledWith(3, setBooks(result.data.items))
+        expect(dispatchMock).toHaveBeenNthCalledWith(4, setLoader(false))
     })
+    test('fetch books', async () => {
+        const thunk = fetchMoreBooks({
+            subject: 'history',
+            startIndex: 0,
+            title: 'Js',
+            sorting: 'newest'
+        })
 
-    const dispatchMock = jest.fn()
-    //@ts-ignore
-    await thunk(dispatchMock)
+        bookAPIMock.fetchBooks.mockResolvedValue(Promise.resolve(result))
+        const dispatchMock = jest.fn()
+        const getStateMock = jest.fn()
 
-    expect(dispatchMock).toBeCalledTimes(4)
-    expect(dispatchMock).toHaveBeenNthCalledWith(1, setLoader(true))
-    expect(dispatchMock).toHaveBeenNthCalledWith(2, setTotalResults(result.totalItems))
-    expect(dispatchMock).toHaveBeenNthCalledWith(3, setBooks(result.items))
-    expect(dispatchMock).toHaveBeenNthCalledWith(4, setLoader(false))
+        await thunk(dispatchMock, getStateMock, {})
+
+        expect(dispatchMock).toBeCalledTimes(3)
+        expect(dispatchMock).toHaveBeenNthCalledWith(1, setLoader(true))
+        expect(dispatchMock).toHaveBeenNthCalledWith(2, setNewBooks(result.data.items))
+        expect(dispatchMock).toHaveBeenNthCalledWith(3, setLoader(false))
+    })
 })
+
